@@ -1,0 +1,35 @@
+{
+  "name": "@redux-auth-examples/mock-server",
+  "version": "1.0.0",
+  "description": "Mock backend using MSW for testing purpose",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "require": "./dist/index.js",
+    "import": "./dist/index.mjs"
+  },
+  "scripts": {
+    "build": "tsup",
+    "lint": "xo",
+    "prebuild": "tsc --noEmit --noErrorTruncation --pretty false --incremental false",
+    "watch": "tsup --watch"
+  },
+  "keywords": [],
+  "author": "Jaime Leonardo Suncin Cruz",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "@mswjs/data": "^0.9.0",
+    "http-status-codes": "^2.2.0"
+  },
+  "devDependencies": {
+    "@sindresorhus/tsconfig": "^2.0.0",
+    "eslint-import-resolver-typescript": "^2.5.0",
+    "msw": "^0.38.1",
+    "tsup": "^5.11.13",
+    "typescript": "^4.5.5",
+    "xo": "^0.48.0"
+  },
+  "peerDependencies": {
+    "msw": "^0.38.1"
+  }
+}
