@@ -14,6 +14,8 @@
     "lint": "xo",
     "prebuild": "tsc --noEmit --noErrorTruncation --pretty false --incremental false",
     "start": "node bin/mock-server",
+    "test": "ava test",
+    "test:coverage": "c8 pnpm test",
     "watch": "tsup --watch"
   },
   "keywords": [],
@@ -28,8 +30,14 @@
   "devDependencies": {
     "@faker-js/faker": "^6.0.0-alpha.7",
     "@sindresorhus/tsconfig": "^2.0.0",
+    "@types/test-listen": "^1.1.0",
+    "ava": "^4.0.1",
+    "c8": "^7.11.0",
+    "esbuild-register": "^3.3.2",
     "eslint-import-resolver-typescript": "^2.5.0",
     "msw": "^0.38.1",
+    "pactum": "^3.1.4",
+    "test-listen": "^1.1.0",
     "tsup": "^5.11.13",
     "typescript": "^4.5.5",
     "xo": "^0.48.0"
