@@ -64,3 +64,25 @@ export function decodeToken(token: string | undefined | undefined) {
     return null;
   }
 }
+
+export const isoDateRegex = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z/;
+
+export const errorResponseSchema = {
+  type: 'object',
+  properties: {
+    statusCode: {
+      type: 'integer',
+    },
+    error: {
+      type: 'string',
+    },
+    message: {
+      type: 'string',
+    },
+    errors: {
+      type: 'object',
+    },
+  },
+  required: ['statusCode', 'error', 'message'],
+  additionalProperties: false,
+};
