@@ -3,7 +3,7 @@ import http from 'http';
 import { createServer } from '@mswjs/http-middleware';
 import anyTest, { type TestFn } from 'ava';
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
-import { handler, request, spec } from 'pactum';
+import { request, spec } from 'pactum';
 import listen from 'test-listen';
 
 import {
@@ -65,11 +65,6 @@ test.before(async (t) => {
   const url = await listen(httpServer);
 
   request.setBaseUrl(url);
-  handler.addCaptureHandler('SaveToken', (context) => {
-    const authorization = context.res.headers.authorization;
-
-    return authorization ? authorization.split(' ')[1] : null;
-  });
 });
 
 test.after(() => {
@@ -82,11 +77,14 @@ test.serial('register a new user', async (t) => {
     .withJson(t.context.newUser)
     .expectStatus(StatusCodes.ACCEPTED)
     .expectJsonLike({
-      id: 'typeof $V === "number"',
-      name: t.context.newUser.name,
-      email: t.context.newUser.email,
-      createdAt: isoDateRegex,
-      updatedAt: isoDateRegex,
+      token: 'typeof $V === "string"',
+      user: {
+        id: 'typeof $V === "number"',
+        name: t.context.newUser.name,
+        email: t.context.newUser.email,
+        createdAt: isoDateRegex,
+        updatedAt: isoDateRegex,
+      },
     })
     .expectHeaderContains('authorization', /Bearer\s.+/)
     .expectCookiesLike({
@@ -94,7 +92,7 @@ test.serial('register a new user', async (t) => {
       HttpOnly: null,
       SameSite: 'Strict',
     })
-    .stores('newUser', '.')
+    .stores('newUser', '.user')
     .toss();
 });
 
@@ -171,11 +169,14 @@ test.serial('login an user', async (t) => {
     })
     .expectStatus(StatusCodes.OK)
     .expectJsonLike({
-      id: '$S{newUser.id}',
-      name: '$S{newUser.name}',
-      email: '$S{newUser.email}',
-      createdAt: isoDateRegex,
-      updatedAt: isoDateRegex,
+      token: 'typeof $V === "string"',
+      user: {
+        id: '$S{newUser.id}',
+        name: '$S{newUser.name}',
+        email: '$S{newUser.email}',
+        createdAt: isoDateRegex,
+        updatedAt: isoDateRegex,
+      },
     })
     .expectHeaderContains('authorization', /Bearer\s.+/)
     .expectCookiesLike({
@@ -184,7 +185,7 @@ test.serial('login an user', async (t) => {
       SameSite: 'Strict',
     })
     .returns((context) => context.res.headers.authorization)
-    .stores('token', '#SaveToken')
+    .stores('token', '.token')
     .toss();
 });
 

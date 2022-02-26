@@ -107,7 +107,7 @@ export const registerHandler = rest.post<Register>(
         httpOnly: true,
         sameSite: 'strict',
       }),
-      context.json(user),
+      context.json({ token, user }),
     );
   },
 );
@@ -163,8 +163,11 @@ export const loginHandler = rest.post<Login>(
         sameSite: 'strict',
       }),
       context.json({
-        ...user,
-        password: undefined,
+        token,
+        user: {
+          ...user,
+          password: undefined,
+        },
       }),
     );
   },
